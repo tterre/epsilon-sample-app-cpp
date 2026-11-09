@@ -14,7 +14,7 @@ void eadk_main() {
   Display::pushRectUniform(
     Display::Rect(0, 0, 320, 240),
     Display::Color(0x000000)
-  );
+  ); 
   while (1) {
     Keyboard::State kbd = Keyboard::scan();
     if (kbd.keyDown(Keyboard::Key::OK)) {
