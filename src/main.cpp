@@ -12,6 +12,7 @@
 // Informations lues par nwlink pour fabriquer le fichier .nwa
 extern "C" const char eadk_app_name[] __attribute__((section(".rodata.eadk_app_name"))) = "Texte";
 extern "C" const uint32_t eadk_api_level __attribute__((section(".rodata.eadk_api_level"))) = 0;
+
 #define USE_STORAGE 1
 
 #if USE_STORAGE
@@ -91,7 +92,16 @@ static void save() {
   filebuf[0] = 0;  // 0 = pas d'import automatique en Python
   memcpy(filebuf + 1, text, len);
   filebuf[len + 1] = 0;
-  saved_ok = extapp_fileWrite(FILE_NAME, filebuf, len + 2);
+  // supprimer toutes les anciennes versions du fichier avant d'ecrire
+  for (int i = 0; i < 10 && extapp_fileExists(FILE_NAME); i++) {
+    extapp_fileErase(FILE_NAME);
+  }
+  bool ok = extapp_fileWrite(FILE_NAME, filebuf, len + 2);
+  // relecture pour verifier que le texte est bien dans le stockage
+  size_t l = 0;
+  const char * c = extapp_fileRead(FILE_NAME, &l);
+  saved_ok = ok && c != NULL && l >= (size_t)len + 1 &&
+             memcmp(c + 1, text, len) == 0;
 #endif
 }
 
