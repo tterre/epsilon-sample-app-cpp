@@ -2,7 +2,7 @@ Q ?= @
 CC = arm-none-eabi-gcc
 CXX = arm-none-eabi-g++
 BUILD_DIR = target
-NWLINK = npx --yes -- nwlink@0.0.16
+NWLINK = npx --yes -- nwlink@0.0.19
 LINK_GC = 1
 LTO = 1
 
@@ -21,7 +21,7 @@ src = $(addprefix src/,\
 
 CPPFLAGS = -std=c++11 -fno-exceptions
 CPPFLAGS += -Os -Wall
-CPPFLAGS += $(shell $(NWLINK) eadk-cflags)
+CPPFLAGS += $(shell $(NWLINK) eadk-cflags-device)
 LDFLAGS = -Wl,--relocatable
 LDFLAGS += -nostartfiles
 LDFLAGS += --specs=nano.specs
