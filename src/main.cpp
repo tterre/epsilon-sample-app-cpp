@@ -9,6 +9,9 @@
 #include <stddef.h>
 #include <string.h>
 
+// Informations lues par nwlink pour fabriquer le fichier .nwa
+extern "C" const char eadk_app_name[] __attribute__((section(".rodata.eadk_app_name"))) = "Texte";
+extern "C" const uint32_t eadk_api_level __attribute__((section(".rodata.eadk_api_level"))) = 0;
 #define USE_STORAGE 0
 
 #if USE_STORAGE
