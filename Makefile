@@ -17,6 +17,7 @@ src = $(addprefix src/,\
   rocket.cpp \
   spaceship.cpp \
   score.cpp \
+  storage.c \
 )
 
 CPPFLAGS = -std=c++11 -fno-exceptions
@@ -58,6 +59,11 @@ $(BUILD_DIR)/voord.nwa: $(call object_for,$(src)) $(BUILD_DIR)/icon.o
 $(addprefix $(BUILD_DIR)/,%.o): %.cpp | $(BUILD_DIR)
 	@echo "CXX     $^"
 	$(Q) $(CXX) $(CPPFLAGS) $(SFLAGS) -c $^ -o $@
+
+# Compilation des fichiers C (storage.c) : memes options, sans -std=c++11
+$(addprefix $(BUILD_DIR)/,%.o): %.c | $(BUILD_DIR)
+	@echo "CC      $^"
+	$(Q) $(CC) $(filter-out -std=c++11,$(CPPFLAGS)) $(SFLAGS) -c $^ -o $@
 
 $(BUILD_DIR)/icon.o: src/icon.png
 	@echo "ICON    $<"
